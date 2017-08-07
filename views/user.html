@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<% include common/header.html %>
+
+    <div class="message">
+        <form action="/users/user" method="post" enctype="multipart/form-data">
+            昵称：<input type="text" name="petName"><br>
+            介绍：<textarea name="description" id="" cols="30" rows="10"></textarea><br>
+            头像：<input type="file" name="fileName">
+            <input type="submit" value="提交信息">
+        </form>
+    </div>
+<div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>昵称</th>
+            <th>介绍</th>
+            <th>头像</th>
+            <th>操作</th>
+        </tr>
+        <% for(var i=0;i<messageData.length;i++){ %>
+        <tr>
+            <td><%= messageData[i]._id %></td>
+            <td><%= messageData[i].petName %></td>
+            <td><%= messageData[i].description %></td>
+            <td width="20%"><img width='50px' src="/upload/<%= messageData[i].src %>" alt=""></td>
+            <td><a href="#">修改</a> <a href="?act=del&id=<%= messageData[i]._id %>" onclick="return confirm('确定删除吗？')">删除</a></td>
+        </tr>
+        <% } %>
+    </table>
+</div>
+</body>
+</html>
