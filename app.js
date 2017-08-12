@@ -1,4 +1,3 @@
-//就剩修改user功能
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');

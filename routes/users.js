@@ -5,6 +5,7 @@ const ModelBlog = require('../model/blog.js');
 const ModelMessage = require('../model/message.js');
 const pathLib = require('path');
 const fs = require('fs');
+const md5 = require('../libs/md5.js');
 
 router.use(function(req,res,next){
     if(!req.session['user_id'] && req.url!='/login' && req.url!='/reg'){
@@ -20,9 +21,12 @@ router.get('/reg',function(req,res){
 })
 
 router.post('/reg',function(req,res){
+    // 密码用md5加密
+    var password = md5.md5(req.body.password + md5.MD5_SUFFIX);
+
     var postData = new ModelUsers({
         user: req.body.user,
-        password: req.body.password
+        password: password
     });
     ModelUsers.findOne({
         user: req.body.user
@@ -48,13 +52,15 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login',function(req,res){
+    var password = md5.md5(req.body.password + md5.MD5_SUFFIX);
+
     ModelUsers.findOne({user: req.body.user},function(err,userdata){
         if(err){
             console.log(err);
             res.status(500).send('数据库错误');
         }else{
             if(userdata){
-                if(userdata.password == req.body.password){
+                if(userdata.password == password){
                     req.session['user_id'] = userdata._id;
                     res.redirect('/users/');
                 }else{
