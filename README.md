@@ -1,2 +1,1 @@
-# myBlog
-mongodb+express
+mongodb+express搭建的博客项目
